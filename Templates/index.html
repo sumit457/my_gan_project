@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAN Number Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        async function generateImages() {
+            const response = await fetch('/generate');
+            const data = await response.json();
+
+            const imagesDiv = document.getElementById('images');
+            imagesDiv.innerHTML = '';  // Clear previous images
+
+            // Loop over the images and add them to the page
+            data.images.forEach((image, idx) => {
+                const imgElement = document.createElement('img');
+                imgElement.src = 'data:image/png;base64,' + image;
+                imgElement.alt = `Generated Image ${idx + 1}`;
+                imagesDiv.appendChild(imgElement);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Generate CIFAR10-like Images</h1>
+    <button onclick="generateImages()">Generate Images</button>
+
+    <div id="images" class="image-grid">
+        <!-- Generated images will be inserted here -->
+    </div>
+</body>
+</html>
